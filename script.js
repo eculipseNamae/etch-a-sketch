@@ -12,26 +12,52 @@ for(i=0; i<16; i++){
         container.appendChild(div);
     }
 }
-container.addEventListener('mouseover', (e)=>{
+
+container.addEventListener('mouseover', (e) => {
     let target = e.target;
-    if(target && target!==container){
-        target.style.backgroundColor = "#616161";
+
+    if (target && target !== container) {
+        // Generate a new random RGB color on each hover
+        let randomColor = getRandomColor();
+        
+        // Set the new random color
+        target.style.backgroundColor = randomColor;
+
+        // Darken the color by 10% for subsequent hovers
+        darkenColor(target, 0.1);
     }
-    
 });
+
+// Function to generate a random RGB color
+function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+// Function to darken the existing color of the target by a specified percentage
+function darkenColor(target, percent) {
+    let currentColor = target.style.backgroundColor;
+
+    // If the color is not set, return
+    if (!currentColor) return;
+
+    let rgba = currentColor.match(/\d+/g).map(Number); // Extract RGB values
+    let factor = 1 - percent; // Calculate the darkening factor
+
+    // Darken each color component
+    let r = Math.floor(rgba[0] * factor);
+    let g = Math.floor(rgba[1] * factor);
+    let b = Math.floor(rgba[2] * factor);
+
+    // Set the new darker color
+    target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+}
+
 
 btn.addEventListener('click', (e)=>{
 
-    /* let cols = parseInt(prompt("Enter number of cols:"),10);
-    let rows = parseInt(prompt("Enter number of rows:"),10);
-    if(rows>64 || !Number.isInteger(rows) || rows<=0){
-        console.log("rows defaulted to 64");
-        rows = 64;
-    }
-    if(cols>64 || !Number.isInteger(cols) || cols<=0){
-        console.log("cols defaulted to 64");
-        cols = 64;
-    } */
     let input = parseFloat(prompt("Enter"));
     let newSize = setSize(input);
     if (newSize > 64 || !Number.isFinite(newSize) || newSize <= 0) {
