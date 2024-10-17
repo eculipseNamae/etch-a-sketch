@@ -12,49 +12,25 @@ for(i=0; i<16; i++){
         container.appendChild(div);
     }
 }
-
 container.addEventListener('mouseover', (e) => {
     let target = e.target;
 
     if (target && target !== container) {
-        // Generate a new random RGB color on each hover
         let randomColor = getRandomColor();
+        let opacityStorage = parseFloat(target.style.opacity) || 0.1;
+        let newOpacity = opacityStorage+0.1;
         
-        // Set the new random color
         target.style.backgroundColor = randomColor;
-
-        // Darken the color by 10% for subsequent hovers
-        darkenColor(target, 0.1);
+        target.style.opacity = `${newOpacity}`;
     }
 });
 
-// Function to generate a random RGB color
 function getRandomColor() {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
     return `rgb(${r}, ${g}, ${b})`;
 }
-
-// Function to darken the existing color of the target by a specified percentage
-function darkenColor(target, percent) {
-    let currentColor = target.style.backgroundColor;
-
-    // If the color is not set, return
-    if (!currentColor) return;
-
-    let rgba = currentColor.match(/\d+/g).map(Number); // Extract RGB values
-    let factor = 1 - percent; // Calculate the darkening factor
-
-    // Darken each color component
-    let r = Math.floor(rgba[0] * factor);
-    let g = Math.floor(rgba[1] * factor);
-    let b = Math.floor(rgba[2] * factor);
-
-    // Set the new darker color
-    target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-}
-
 
 btn.addEventListener('click', (e)=>{
 
@@ -73,6 +49,7 @@ btn.addEventListener('click', (e)=>{
             div.style.width = `${newSize}px`;
             
             div.style.height = div.style.width;
+            div.style.opacity = 0.1;
             container.appendChild(div);
         }
     }
