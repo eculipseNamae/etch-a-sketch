@@ -3,15 +3,24 @@ let btn = document.querySelector("button");
 const containerWidth = parseFloat(container.offsetWidth);
 console.log(containerWidth);
 
+let size = 16;
+let cellSize = 38;
 
-for(i=0; i<16; i++){
-    for(j=0; j<16; j++){
-        let div = document.createElement("div");
-        div.style.width = (containerWidth/16)+"px";
-        div.style.height = (containerWidth/16)+"px";
-        container.appendChild(div);
+function generateGrid(){
+    for(i=0; i<size; i++){
+        for(j=0; j<size; j++){
+            let div = document.createElement("div");
+            div.style.cssText = "box-sizing: border-box;"+
+                                "border: 1px solid rgb(71, 223, 165);";
+            div.style.width = `${cellSize}px`;
+            
+            div.style.height = div.style.width;
+            
+            container.appendChild(div);
+        }
     }
 }
+
 container.addEventListener('mouseover', (e) => {
     let target = e.target;
 
@@ -34,27 +43,16 @@ function getRandomColor() {
 
 btn.addEventListener('click', (e)=>{
 
-    let input = parseFloat(prompt("Enter"));
-    let newSize = setSize(input);
-    if (newSize > 64 || !Number.isFinite(newSize) || newSize <= 0) {
+    const input = parseFloat(prompt("Enter"));
+    size = input;
+    cellSize = containerWidth/size;
+    if (cellSize > 64 || !Number.isFinite(cellSize) || cellSize <= 0) {
         console.log("defaulted to 64");
-        newSize = 64;
+        cellSize = 64;
     }
     
-
     container.innerHTML = '';
-    for(i=0; i<input; i++){
-        for(j=0; j<input; j++){
-            let div = document.createElement("div");
-            div.style.width = `${newSize}px`;
-            
-            div.style.height = div.style.width;
-            div.style.opacity = 0.1;
-            container.appendChild(div);
-        }
-    }
+    generateGrid();
 });
 
-function setSize(num){
-    return containerWidth/num;
-}
+generateGrid();
